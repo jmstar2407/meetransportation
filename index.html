@@ -6,12 +6,26 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <style>
         #map {
-            height: 100vh;
+            height: 90vh;
+        }
+        #locate-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+            background-color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
     </style>
 </head>
 <body>
     <div id="map"></div>
+    <button id="locate-btn">Centrar Mi Ubicación</button>
+
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
         // Crear el mapa y establecer la vista inicial
@@ -23,8 +37,10 @@
             attribution: '© OpenStreetMap contributors'
         }).addTo(map);
 
-        // Solicitar y mostrar la ubicación actual del usuario
-        map.locate({setView: true, maxZoom: 16});
+        // Función para centrar en la ubicación del usuario al hacer clic en el botón
+        document.getElementById('locate-btn').onclick = function() {
+            map.locate({setView: true, maxZoom: 16});
+        };
 
         // Añadir un marcador para la ubicación del usuario
         function onLocationFound(e) {
