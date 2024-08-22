@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Mapa con Mi Ubicación</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        #map {
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        // Crear el mapa y establecer la vista inicial
+        var map = L.map('map').setView([18.53448540777311, -69.84922940831656], 13);
+
+        // Añadir una capa de mapa (por ejemplo, OpenStreetMap)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Solicitar y mostrar la ubicación actual del usuario
+        map.locate({setView: true, maxZoom: 16});
+
+        // Añadir un marcador para la ubicación del usuario
+        function onLocationFound(e) {
+            var radius = e.accuracy / 2;
+
+            L.marker(e.latlng).addTo(map)
+                .bindPopup("Estás dentro de " + radius + " metros de este punto").openPopup();
+
+            L.circle(e.latlng, radius).addTo(map);
+        }
+
+        map.on('locationfound', onLocationFound);
+
+        // Mostrar un mensaje si la ubicación no se pudo encontrar
+        function onLocationError(e) {
+            alert(e.message);
+        }
+
+        map.on('locationerror', onLocationError);
+    </script>
+</body>
+</html>
